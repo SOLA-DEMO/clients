@@ -6,6 +6,8 @@ package org.sola.clients.swing.external;
 
 import java.awt.event.WindowEvent;
 import org.sola.clients.beans.security.SecurityBean;
+import org.sola.clients.swing.common.tasks.SolaTask;
+import org.sola.clients.swing.common.tasks.TaskManager;
 
 /**
  *
@@ -33,7 +35,43 @@ public class MainForm extends javax.swing.JFrame {
      */
     private void postInit() {
         lblUserName.setText(SecurityBean.getCurrentUser().getUserName());
+        openRequestsForm();
     }
+
+    /**
+     * Shows Requests form.
+     */
+    private void openRequestsForm() {
+
+        SolaTask t = new SolaTask<Void, Void>() {
+
+            @Override
+            protected Void doTask() {
+                setMessage("Opening Requests form");
+                RequestsForm form = new RequestsForm();
+                pnlMain.addPanel(form, "REQUEST_FORM", true);
+                return null;
+            }
+        };
+        TaskManager.getInstance().runTask(t);
+    }
+    
+    /** Shows My Information form. */
+private void openMyInfoForm(){
+	SolaTask t = new SolaTask<Void, Void>() {
+
+		@Override
+		protected Void doTask() {
+			setMessage("Opening My Info form");
+			MyInfoForm form = new MyInfoForm();
+			pnlMain.addPanel(form, "MYINFO_FORM", true);
+			return null;
+		}
+	};
+	TaskManager.getInstance().runTask(t);
+}
+
+
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT
@@ -65,7 +103,6 @@ public class MainForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/external/Bundle"); // NOI18N
         setTitle(bundle.getString("MainForm.title")); // NOI18N
-        setPreferredSize(new java.awt.Dimension(600, 400));
 
         toolbarMain.setFloatable(false);
         toolbarMain.setRollover(true);
@@ -74,12 +111,22 @@ public class MainForm extends javax.swing.JFrame {
         btnMyInfo.setText(bundle.getString("MainForm.btnMyInfo.text")); // NOI18N
         btnMyInfo.setFocusable(false);
         btnMyInfo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMyInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMyInfoActionPerformed(evt);
+            }
+        });
         toolbarMain.add(btnMyInfo);
 
         btnRequests.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
         btnRequests.setText(bundle.getString("MainForm.btnRequests.text")); // NOI18N
         btnRequests.setFocusable(false);
         btnRequests.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestsActionPerformed(evt);
+            }
+        });
         toolbarMain.add(btnRequests);
 
         btnHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/help.png"))); // NOI18N
@@ -133,10 +180,20 @@ public class MainForm extends javax.swing.JFrame {
 
         menuMyInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
         menuMyInfo.setText(bundle.getString("MainForm.menuMyInfo.text")); // NOI18N
+        menuMyInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMyInfoActionPerformed(evt);
+            }
+        });
         menuView.add(menuMyInfo);
 
         menuRequests.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
         menuRequests.setText(bundle.getString("MainForm.menuRequests.text")); // NOI18N
+        menuRequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRequestsActionPerformed(evt);
+            }
+        });
         menuView.add(menuRequests);
 
         mainMenu.add(menuView);
@@ -178,6 +235,22 @@ public class MainForm extends javax.swing.JFrame {
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_menuExitActionPerformed
+
+    private void btnRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestsActionPerformed
+        openRequestsForm();
+    }//GEN-LAST:event_btnRequestsActionPerformed
+
+    private void menuRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRequestsActionPerformed
+       openRequestsForm();
+    }//GEN-LAST:event_menuRequestsActionPerformed
+
+    private void btnMyInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyInfoActionPerformed
+       openMyInfoForm(); 
+    }//GEN-LAST:event_btnMyInfoActionPerformed
+
+    private void menuMyInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMyInfoActionPerformed
+         openMyInfoForm();
+    }//GEN-LAST:event_menuMyInfoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHelp;
